@@ -1,7 +1,9 @@
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:time_management_app/screens/about.dart';
 import 'package:time_management_app/screens/reminder.dart';
+import 'package:time_management_app/screens/settings.dart';
 // import 'package:time_management_app/screens/home.dart';
 import 'package:time_management_app/screens/splash.dart';
 
@@ -45,6 +47,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const SplashScreen(),
         '/reminder': (context) => const ReminderScreen(),
+        '/settings': (context) => const SettingsScreen(),
+        "/about": (context) => const AboutScreen()
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan),

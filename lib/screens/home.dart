@@ -256,17 +256,8 @@ class _HomeScreenState extends State<HomeScreen>
 
   List<Widget> tiles = [];
   void deleteItem(String itemName) {
-    // 1. Update your data model
-    // Assuming you have a list to store items
     tiles.removeAt(0);
-
-    // 2. (Optional) Call an API to delete from server (if applicable)
-    // Replace with your actual API call if needed
-    // deleteItemFromServer(itemName);
-
-    // 3. Update UI (assuming you're using a Listview)
     setState(() {
-      // Rebuild the list with the updated data
       tiles = [];
     });
   }
@@ -354,13 +345,7 @@ class _HomeScreenState extends State<HomeScreen>
           backgroundColor: Colors.white,
           elevation: 5,
           onPressed: () async {
-            // AndroidAlarmManager.periodic(Duration(seconds: 10), i, printHello);
             showModalBottomSheet();
-            // alert("Notification Reminder");
-            // sendBroadcast(
-            //   BroadcastMessage(name: "time_management_app"),
-            // );
-            // await storage.deleteAll();
           },
           child: const Icon(
             CupertinoIcons.add,
@@ -574,14 +559,22 @@ class _HomeScreenState extends State<HomeScreen>
           icon: const Icon(Icons.more_vert),
           iconColor: Colors.white,
           onSelected: (value) {
+            Map<String, String> settings = {"2": "/settings", "4": "/about"};
             setState(() {
               _selectedValue = value!;
+              print("selected value $_selectedValue");
+              if (_selectedValue == "2" || _selectedValue == "4") {
+                Navigator.pushNamed(context, settings[_selectedValue]!);
+              } else if (_selectedValue == "3") {
+                alert("This feature is coming soon");
+              }
+              print(_selectedValue);
             });
           },
           itemBuilder: (context) => [
             menuItemWidget("Task List", "1", CupertinoIcons.list_bullet_indent),
             menuItemWidget("Settings ", "2", Icons.settings),
-            menuItemWidget("Invite Friends", "3", CupertinoIcons.person_2_fill),
+            // menuItemWidget("Sync List", "3", Icons.share),
             menuItemWidget("About", "4", CupertinoIcons.info_circle_fill),
           ],
         ),
@@ -623,6 +616,34 @@ class _HomeScreenState extends State<HomeScreen>
                 textAlign: TextAlign.center,
               ),
               title: const Text("Time Management App"),
+              actions: [
+                TextButton(
+                    onPressed: () async {
+                      canShowReminder = true;
+                      await NotificationController.player.stop();
+                      Navigator.pop(context);
+                    },
+                    child: const Text("Ok"))
+              ],
+              icon: const Icon(
+                CupertinoIcons.alarm,
+                size: 40,
+                color: Colors.cyan,
+              ),
+            ));
+  }
+
+  void alert2(String msg) async {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => AlertDialog(
+              content: Text(
+                msg,
+                style: TextStyle(fontSize: 20),
+                textAlign: TextAlign.center,
+              ),
+              title: const Text("Syncronize List"),
               actions: [
                 TextButton(
                     onPressed: () async {
